@@ -396,9 +396,7 @@ document.querySelectorAll('svg.bezier').forEach(svg => {
   generateLines();
   circles.forEach(circle => {
     let mousemove;
-    circle.addEventListener('mousedown', () => alert('MOUSE'));
-    circle.addEventListener('touchstart', () => alert('TOUCH'));
-    circle.addEventListener('mousedown', e => {
+    let mousedown = e => {
       let diffX = e.clientX - circle.cx.baseVal.value;
       let diffY = e.clientY - circle.cy.baseVal.value;
       mousemove = e => {
@@ -416,8 +414,12 @@ document.querySelectorAll('svg.bezier').forEach(svg => {
         }
       };
       svg.addEventListener('mousemove', mousemove);
-    });
+      svg.addEventListener('touchmove', mousemove);
+    };
+    circle.addEventListener('mousedown', mousedown);
+    circle.addEventListener('touchstart', mousedown);
     document.addEventListener('mouseup', e => svg.removeEventListener('mousemove', mousemove));
+    document.addEventListener('touchend', e => svg.removeEventListener('touchmove', mousemove));
   });
 });
 document.querySelectorAll('input[name=c]').forEach(radio => {
