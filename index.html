@@ -494,6 +494,46 @@ document.querySelector('.reset-draw').addEventListener('animationend', () => {
     document.querySelectorAll('svg.saw .reset-cutout').forEach(path => path.classList.remove('cutout'));
   }, 2000);
 });
+(() => {
+  function checkD() {
+    let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    let path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.style.d = `path('MZ')`;
+    document.body.appendChild(svg);
+    svg.appendChild(path);
+    let result = !!getComputedStyle(path).d;
+    document.body.removeChild(svg);
+    return result;
+  }
+  function checkOP() {
+    let div = document.createElement('div');
+    div.style.offsetPath = `path('MZ')`;
+    document.body.appendChild(div);
+    let result = !!getComputedStyle(div).d;
+    document.body.removeChild(div);
+    return result;
+  }
+  if (!checkD()) {
+    let p7 = document.querySelector('svg.s7 path');
+    let s7 = [99.994,26.835,66.641,172.965,160.095,55.775,25.055,120.809,174.945,120.809,39.905,55.775006,133.359,172.965];
+    let e7 = [100,56.346,12.578,143.915,129.138,85.536,41.716,114.726,158.276,114.726,70.854,85.536,187.414,143.915];
+    let p9 = document.querySelector('svg.s9 path');
+    let s9 = [100,24.825,73.489,175.175,149.824,42.955,32.874,141.089,176.334,88.873,23.664,88.873,167.124,141.089,50.174,42.955,126.509,175.175];
+    let e9 = [100.29,60.602,21.203,139.398,119.914,80.3,40.598,119.699,139.613,100,60.297,100,159.312,119.699,79.996,80.3,178.796,139.398];
+
+    let t = 0, duration = 2000, start;
+    requestAnimationFrame(function loop(now) {
+      start = start || now;
+      t = (now - start) / duration;
+
+      p7.setAttribute('d', `M${s7.map((s,i) => s + Math.min(Math.max(t<0.5 ? (t-0.05)/0.4 : (1-(t-0.55)/0.4), 0), 1) * (e7[i] - s)).join()}Z`);
+      p9.setAttribute('d', `M${s9.map((s,i) => s + Math.min(Math.max(t<0.5 ? (t-0.05)/0.4 : (1-(t-0.55)/0.4), 0), 1) * (e9[i] - s)).join()}Z`);
+
+      if(now - start > duration) { t = 0; start += duration; }
+      requestAnimationFrame(loop);
+    });
+  }
+})();
   </script>
 </body>
 </html>
