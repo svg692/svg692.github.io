@@ -430,8 +430,8 @@ document.querySelectorAll('svg.bezier').forEach(svg => {
         point.x = (e.clientX - diffX);
         point.y = (e.clientY - diffY);
         point = point.matrixTransform(svg.getScreenCTM().inverse());
-        circle.cx.baseVal.value = point.x;
-        circle.cy.baseVal.value = point.y;
+        circle.cx.baseVal.value = point.x|0;
+        circle.cy.baseVal.value = point.y|0;
         generateLines();
         function coords(i) {
           let updated = circles.findIndex(c => c == circle) == i;
@@ -458,8 +458,8 @@ document.querySelectorAll('svg.bezier').forEach(svg => {
         point.x = (e.touches[0].clientX - diffX);
         point.y = (e.touches[0].clientY - diffY);
         point = point.matrixTransform(svg.getScreenCTM().inverse());
-        circle.cx.baseVal.value = point.x;
-        circle.cy.baseVal.value = point.y;
+        circle.cx.baseVal.value = point.x|0;
+        circle.cy.baseVal.value = point.y|0;
         generateLines();
         function coords(i) {
           let updated = circles.findIndex(c => c == circle) == i;
