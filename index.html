@@ -224,6 +224,25 @@ document.querySelectorAll('svg.tiger').forEach(svg => {
       circle.style.display = 'none';
     });
   });
+
+  
+  svg.addEventListener('touchmove', e => {
+    e.preventDefault();
+    point.x = e.touches[0].clientX;
+    point.y = e.touches[0].clientY;
+    point = point.matrixTransform(svg.getScreenCTM().inverse());
+    svg.querySelectorAll('circle').forEach(circle => {
+      circle.style.display = '';
+      circle.setAttribute('cx', point.x);
+      circle.setAttribute('cy', point.y);
+    });
+    svg.querySelector('use').setAttribute('transform', `translate(${-point.x},${-point.y})scale(2)`);
+  });
+  svg.addEventListener('mouseleave', e => {
+    svg.querySelectorAll('circle').forEach(circle => {
+      circle.style.display = 'none';
+    });
+  });
 });
 (() => {
   let svg = document.querySelector('svg.world');
