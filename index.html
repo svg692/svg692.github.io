@@ -419,12 +419,19 @@ document.querySelectorAll('svg.bezier').forEach(svg => {
   generateLines();
   circles.forEach(circle => {
     let mousemove;
+    let point = svg.createSVGPoint();
     circle.addEventListener('mousedown', e => {
-      let diffX = e.clientX - circle.cx.baseVal.value;
-      let diffY = e.clientY - circle.cy.baseVal.value;
+      point.x = e.clientX;
+      point.y = e.clientY;
+      point = point.matrixTransform(svg.getScreenCTM().inverse());
+      let diffX = point.x - circle.cx.baseVal.value;
+      let diffY = point.y - circle.cy.baseVal.value;
       mousemove = e => {
-        circle.cx.baseVal.value = (e.clientX - diffX);
-        circle.cy.baseVal.value = (e.clientY - diffY);
+        point.x = (e.clientX - diffX);
+        point.y = (e.clientY - diffY);
+        point = point.matrixTransform(svg.getScreenCTM().inverse());
+        circle.cx.baseVal.value = point.x;
+        circle.cy.baseVal.value = point.y;
         generateLines();
         function coords(i) {
           let updated = circles.findIndex(c => c == circle) == i;
@@ -442,12 +449,17 @@ document.querySelectorAll('svg.bezier').forEach(svg => {
 
     let touchmove;
     circle.addEventListener('touchstart', e => {
-      let diffX = e.touches[0].clientX - circle.cx.baseVal.value;
-      let diffY = e.touches[0].clientY - circle.cy.baseVal.value;
-      touchmove = e => {
-        e.preventDefault();
-        circle.cx.baseVal.value = (e.touches[0].clientX - diffX);
-        circle.cy.baseVal.value = (e.touches[0].clientY - diffY);
+      point.x = e.touches[0].clientX;
+      point.y = e.touches[0].clientY;
+      point = point.matrixTransform(svg.getScreenCTM().inverse());
+      let diffX = point.x - circle.cx.baseVal.value;
+      let diffY = point.y - circle.cy.baseVal.value;
+      mousemove = e => {
+        point.x = (e.touches[0].clientX - diffX);
+        point.y = (e.touches[0].clientY - diffY);
+        point = point.matrixTransform(svg.getScreenCTM().inverse());
+        circle.cx.baseVal.value = point.x;
+        circle.cy.baseVal.value = point.y;
         generateLines();
         function coords(i) {
           let updated = circles.findIndex(c => c == circle) == i;
