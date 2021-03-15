@@ -885,7 +885,6 @@ document.querySelectorAll('svg.bezier').forEach(svg => {
           let updated = circles.findIndex(c => c == circle) == i;
           return `${updated ? '<span class="updated">' : ''}${circles[i].cx.baseVal.value},${circles[i].cy.baseVal.value}${updated ? '</span>' : ''}`;
         }
-        alert(circle.classList);
         if (circles.length > 3) {
           document.querySelector('pre .c').innerHTML = `M ${coords(3)} C ${coords(2)} ${coords(1)} ${coords(0)}`;
         } else if(circle.closest('svg').classList.contains('l')) {
