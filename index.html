@@ -917,7 +917,7 @@ document.querySelectorAll('svg.bezier').forEach(svg => {
           return `${updated ? '<span class="updated">' : ''}${circles[i].cx.baseVal.value},${circles[i].cy.baseVal.value}${updated ? '</span>' : ''}`;
         }
         if (circles.length > 3) {
-          document.querySelector('pre .c').innerHTML = `M ${coords(0)} C ${coords(1)} ${coords(2)} ${coords(3)}`;
+          document.querySelector('pre .c').innerHTML = `M ${coords(3)} C ${coords(2)} ${coords(1)} ${coords(0)}`;
         } else if(circle.closest('svg').classList.contains('l')) {
           document.querySelector('pre .l').innerHTML = `M ${coords(2)} L ${coords(1)} L ${coords(0)}`;
         } else {
